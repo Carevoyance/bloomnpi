@@ -18,7 +18,7 @@ func Fetch() {
 		return
 	}
 
-	_, err = db.Exec("UPDATE data_sources SET status = 'RUNNING' WHERE source = 'NPI'")
+	_, err = db.Exec("UPDATE bloom.data_sources SET status = 'RUNNING' WHERE source = 'NPI'")
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
@@ -97,7 +97,7 @@ func Fetch() {
 	doneTodos := append(monthlyTodos, weeklyTodos...)
 	for _, doneTodo := range doneTodos {
 		key := bloomdb.MakeKey(doneTodo)
-		_, err := db.Exec("INSERT INTO npi_files (id, file) VALUES ('" + key + "', '" + doneTodo + "')")
+		_, err := db.Exec("INSERT INTO bloom.npi_files (id, file) VALUES ('" + key + "', '" + doneTodo + "')")
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
@@ -110,9 +110,9 @@ func Fetch() {
 
 	var query string
 	if len(doneTodos) > 0 {
-		query = "UPDATE data_sources SET status = 'READY', updated = '" + now + "', checked = '" + now + "' WHERE source = 'NPI'"
+		query = "UPDATE bloom.data_sources SET status = 'READY', updated = '" + now + "', checked = '" + now + "' WHERE source = 'NPI'"
 	} else {
-		query = "UPDATE data_sources SET status = 'READY', checked = '" + now + "' WHERE source = 'NPI'"
+		query = "UPDATE bloom.data_sources SET status = 'READY', checked = '" + now + "' WHERE source = 'NPI'"
 	}
 
 	_, err = db.Exec(query)

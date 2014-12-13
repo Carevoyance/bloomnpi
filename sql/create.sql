@@ -1,14 +1,16 @@
-CREATE TABLE npi_files
+CREATE SCHEMA IF NOT EXISTS bloom
+
+CREATE TABLE bloom.npi_files
 (
   id uuid NOT NULL,
   file character varying(255),
   indexed boolean
 );
 
-DELETE FROM data_sources WHERE source = 'NPI';
-INSERT INTO data_sources (source, updated, checked, status) VALUES ('NPI', '2005-01-01', '2005-01-01', 'NEVER_RUN');
+DELETE FROM bloom.data_sources WHERE source = 'NPI';
+INSERT INTO bloom.data_sources (source, updated, checked, status) VALUES ('NPI', '2005-01-01', '2005-01-01', 'NEVER_RUN');
 
-CREATE TABLE npi_licenses
+CREATE TABLE bloom.npi_licenses
 (
   id uuid NOT NULL,
   npi_id uuid,
@@ -19,7 +21,7 @@ CREATE TABLE npi_licenses
   CONSTRAINT npi_licenses_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE npi_locations
+CREATE TABLE bloom.npi_locations
 (
   id uuid NOT NULL,
   address_line character varying(55),
@@ -35,7 +37,7 @@ CREATE TABLE npi_locations
   CONSTRAINT npi_locations_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE npi_organization_officials
+CREATE TABLE bloom.npi_organization_officials
 (
   id uuid NOT NULL,
   last_name character varying(35),
@@ -49,7 +51,7 @@ CREATE TABLE npi_organization_officials
   CONSTRAINT npi_organization_officials_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE npi_other_identifiers
+CREATE TABLE bloom.npi_other_identifiers
 (
   id uuid NOT NULL,
   npi_id uuid,
@@ -60,7 +62,7 @@ CREATE TABLE npi_other_identifiers
   CONSTRAINT npi_other_identifiers_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE npi_parent_orgs
+CREATE TABLE bloom.npi_parent_orgs
 (
   id uuid NOT NULL,
   business_name character varying(70),
@@ -68,7 +70,7 @@ CREATE TABLE npi_parent_orgs
   CONSTRAINT npi_parent_orgs_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE npi_taxonomy_groups
+CREATE TABLE bloom.npi_taxonomy_groups
 (
   id uuid NOT NULL,
   npi_id uuid,
@@ -76,7 +78,7 @@ CREATE TABLE npi_taxonomy_groups
   CONSTRAINT npi_taxonomy_groups_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE npis
+CREATE TABLE bloom.npis
 (
   id uuid NOT NULL,
   file_id uuid,

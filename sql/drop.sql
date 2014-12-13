@@ -1,10 +1,10 @@
-DROP TABLE IF EXISTS npi_licenses;
-DROP TABLE IF EXISTS npi_locations;
-DROP TABLE IF EXISTS npi_organization_officials;
-DROP TABLE IF EXISTS npi_other_identifiers;
-DROP TABLE IF EXISTS npi_parent_orgs;
-DROP TABLE IF EXISTS npi_taxonomy_groups;
-DROP TABLE IF EXISTS npis;
-DROP TABLE IF EXISTS npi_files;
+DROP TABLE IF EXISTS bloom.npi_licenses;
+DROP TABLE IF EXISTS bloom.npi_locations;
+DROP TABLE IF EXISTS bloom.npi_organization_officials;
+DROP TABLE IF EXISTS bloom.npi_other_identifiers;
+DROP TABLE IF EXISTS bloom.npi_parent_orgs;
+DROP TABLE IF EXISTS bloom.npi_taxonomy_groups;
+DROP TABLE IF EXISTS bloom.npis;
+DROP TABLE IF EXISTS bloom.npi_files;
 
-DELETE FROM data_sources WHERE source = 'NPI';
+DELETE FROM bloom.data_sources WHERE source = 'NPI';

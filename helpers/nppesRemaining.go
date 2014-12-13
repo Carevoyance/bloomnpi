@@ -9,7 +9,7 @@ func NppesUnprocessed (db *sql.DB, files []string) ([]string, error) {
 
 	for _, file := range files {
 		var processedFile string
-		err := db.QueryRow("SELECT file FROM npi_files WHERE file = '" + file + "'").Scan(&processedFile)
+		err := db.QueryRow("SELECT file FROM bloom.npi_files WHERE file = '" + file + "'").Scan(&processedFile)
 		switch {
 		case err == sql.ErrNoRows:
 			processed = append(processed, file)
@@ -22,7 +22,7 @@ func NppesUnprocessed (db *sql.DB, files []string) ([]string, error) {
 }
 
 func NppesMarkProcessed (db *sql.DB, file string) (error) {
-	_, err := db.Exec("INSERT INTO npi_files (file) VALUES ('" + file + "')")
+	_, err := db.Exec("INSERT INTO bloom.npi_files (file) VALUES ('" + file + "')")
 	if err != nil {
 		return err
 	}

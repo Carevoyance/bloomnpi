@@ -499,7 +499,7 @@ func Upsert(file io.ReadCloser, file_id string) {
 				return
 			}
 			
-			err = bloomdb.Upsert(db, dest.name, dest.columns, dest.channel)
+			err = bloomdb.Upsert(db, "bloom." + dest.name, dest.columns, dest.channel)
 			if err != nil {
 				fmt.Println("Error:", err)
 				return

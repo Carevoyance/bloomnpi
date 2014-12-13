@@ -43,7 +43,7 @@ func (a byFile) Swap(i, j int) {
 }
 
 func updateIndexed(db *sql.DB) (error) {
-	_, err := db.Exec("Update npi_files SET indexed = true")
+	_, err := db.Exec("Update bloom.npi_files SET indexed = true")
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func updateIndexed(db *sql.DB) (error) {
 }
 
 func loadJsonQueries(db *sql.DB) ([]string, error) {
-	rows, err := db.Query("SELECT id, file FROM npi_files WHERE indexed is null OR indexed = false")
+	rows, err := db.Query("SELECT id, file FROM bloom.npi_files WHERE indexed is null OR indexed = false")
 	if err != nil {
 		return nil, err
 	}
