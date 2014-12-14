@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS bloom
+CREATE SCHEMA IF NOT EXISTS bloom;
 
 CREATE TABLE bloom.npi_files
 (
