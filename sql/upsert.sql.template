@@ -3,7 +3,7 @@ WITH upd AS
    SET 
       {{range $i, $e := .Columns}}{{$e}} = s.{{$e}}{{if len $.Columns | sub 1 | eq $i | not}},{{end}}
 {{end}}
-   FROM {{.Table}}_temp s
+   FROM {{.TempTable}} s
    WHERE s.{{.IdColumn}} = t.{{.IdColumn}}
    RETURNING s.{{.IdColumn}})
 
@@ -14,7 +14,7 @@ INSERT INTO {{.Table}}(
 SELECT DISTINCT ON (s.{{.IdColumn}})
   {{range $i, $e := .Columns}}{{$e}}{{if len $.Columns | sub 1 | eq $i | not}},{{end}}
 {{end}}
-FROM {{.Table}}_temp s
+FROM {{.TempTable}} s
 LEFT JOIN upd t USING(id)
 WHERE t.{{.IdColumn}} IS NULL
 RETURNING {{.Table}}.{{.IdColumn}}
