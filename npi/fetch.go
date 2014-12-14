@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 	"time"
-	"github.com/gocodo/bloomdb"
-	"github.com/gocodo/bloomnpi/helpers"
+	"github.com/dimfeld/bloomdb"
+	"github.com/dimfeld/bloomnpi/helpers"
 )
 
 func Fetch() {

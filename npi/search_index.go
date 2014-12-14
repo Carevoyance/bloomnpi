@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"database/sql"
 	"encoding/json"
-	"github.com/gocodo/bloomdb"
+	"github.com/dimfeld/bloomdb"
 )
 
 var monthRegex = regexp.MustCompile("NPPES_Data_Dissemination_[a-zA-Z]+")
