@@ -15,6 +15,6 @@ SELECT DISTINCT ON (s.{{.IdColumn}})
   {{range $i, $e := .Columns}}{{$e}}{{if len $.Columns | sub 1 | eq $i | not}},{{end}}
 {{end}}
 FROM {{.TempTable}} s
-LEFT JOIN upd t USING(id)
+LEFT JOIN upd t USING({{.IdColumn}})
 WHERE t.{{.IdColumn}} IS NULL
 RETURNING {{.Table}}.{{.IdColumn}}
