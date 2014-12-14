@@ -35,7 +35,7 @@ func Upsert(file io.ReadCloser, file_id string) {
 				return
 			}
 
-			list_size := 331
+			list_size := 329
 			npi_values := make([]string, list_size)
 			npi_values[0] = row.Value("NPI")
 			npi_values[1] = row.Value("Entity Type Code")
