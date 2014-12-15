@@ -345,3 +345,5 @@ CREATE TABLE bloom.npis (
     healthcare_provider_taxonomy_group_15 character varying(70),
     updated timestamp without time zone DEFAULT now()
 );
+
+CREATE INDEX ON bloom.npis (npi);

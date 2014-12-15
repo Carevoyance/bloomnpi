@@ -63,17 +63,6 @@ func Fetch() {
 			return
 		}
 
-		file, err := ioutil.ReadFile("sql/index.sql")
-		if err != nil {
-			fmt.Println("Failed to read file.", err)
-			return
-		}
-
-		_, err = db.Exec(string(file[:]))
-		if err != nil {
-			fmt.Println("Failed to read file.", err)
-			return
-		}
 	}
 
 	sort.Strings(weeklyTodos)
