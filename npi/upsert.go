@@ -11,10 +11,11 @@ import (
 )
 
 type tableDesc struct {
-	name     string
-	channel  chan []string
-	idColumn string
-	columns  []string
+	name         string
+	channel      chan []string
+	idColumn     string
+	hasRevisions bool
+	columns      []string
 }
 
 func Upsert(file io.ReadCloser, file_id string) error {
@@ -191,7 +192,9 @@ func Upsert(file io.ReadCloser, file_id string) error {
 			hash := fnv.New64a()
 			// Hash everything except the file ID and the hash itself.
 			for i := 2; i < list_size; i++ {
-				hash.Write([]byte(npi_values[i]))
+				if npi_values[i] != "" {
+					hash.Write([]byte(npi_values[i]))
+				}
 			}
 
 			hashValue := int64(hash.Sum64())
@@ -205,9 +208,10 @@ func Upsert(file io.ReadCloser, file_id string) error {
 
 	dests := []tableDesc{
 		tableDesc{
-			name:     "npis",
-			channel:  npis,
-			idColumn: "npi",
+			name:         "npis",
+			channel:      npis,
+			idColumn:     "npi",
+			hasRevisions: true,
 			columns: []string{
 				"file_id",
 				"hash",
@@ -557,7 +561,7 @@ func Upsert(file io.ReadCloser, file_id string) error {
 			}
 
 			err = bloomdb.Upsert(db, "bloom."+dest.name, dest.idColumn, dest.columns,
-				dest.channel)
+				dest.channel, dest.hasRevisions)
 			if err != nil {
 				fmt.Println("Error:", err)
 				return

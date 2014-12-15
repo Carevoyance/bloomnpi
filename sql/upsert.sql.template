@@ -4,7 +4,7 @@ WITH upd AS
       {{range $i, $e := .Columns}}{{$e}} = s.{{$e}}{{if len $.Columns | sub 1 | eq $i | not}},{{end}}
 {{end}}
    FROM {{.TempTable}} s
-   WHERE s.{{.IdColumn}} = t.{{.IdColumn}}
+   WHERE s.{{.IdColumn}} = t.{{.IdColumn}}{{if .HasRevisions}} AND t.revision=0{{end}}
    RETURNING s.{{.IdColumn}})
 
 INSERT INTO {{.Table}}(
