@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/dimfeld/bloomdb"
 	"github.com/dimfeld/bloomnpi/csvHeaderReader"
+	"hash/fnv"
 	"io"
 	"strconv"
 	"sync"
@@ -16,7 +17,7 @@ type tableDesc struct {
 	columns  []string
 }
 
-func Upsert(file io.ReadCloser, file_id string) {
+func Upsert(file io.ReadCloser, file_id string) error {
 	var wg sync.WaitGroup
 
 	npis := make(chan []string, 100)
@@ -35,28 +36,30 @@ func Upsert(file io.ReadCloser, file_id string) {
 				return
 			}
 
-			list_size := 329
+			list_size := 331
 			npi_values := make([]string, list_size)
-			npi_values[0] = row.Value("NPI")
-			npi_values[1] = row.Value("Entity Type Code")
-			npi_values[2] = row.Value("Replacement NPI")
-			npi_values[3] = row.Value("Employer Identification Number (EIN)")
-			npi_values[4] = row.Value("Provider Organization Name (Legal Business Name)")
-			npi_values[5] = row.Value("Provider Last Name (Legal Name)")
-			npi_values[6] = row.Value("Provider First Name")
-			npi_values[7] = row.Value("Provider Middle Name")
-			npi_values[8] = row.Value("Provider Name Prefix Text")
-			npi_values[9] = row.Value("Provider Name Suffix Text")
-			npi_values[10] = row.Value("Provider Credential Text")
-			npi_values[11] = row.Value("Provider Other Organization Name")
-			npi_values[12] = row.Value("Provider Other Organization Name Type Code")
-			npi_values[13] = row.Value("Provider Other Last Name")
-			npi_values[14] = row.Value("Provider Other First Name")
-			npi_values[15] = row.Value("Provider Other Middle Name")
-			npi_values[16] = row.Value("Provider Other Name Prefix Text")
-			npi_values[17] = row.Value("Provider Other Name Suffix Text")
-			npi_values[18] = row.Value("Provider Other Credential Text")
-			npi_values[19] = row.Value("Provider Other Last Name Type Code")
+			npi_values[0] = file_id
+			// npi_values[1] = hash -- filled in at the end
+			npi_values[2] = row.Value("NPI")
+			npi_values[3] = row.Value("Entity Type Code")
+			npi_values[4] = row.Value("Replacement NPI")
+			npi_values[5] = row.Value("Employer Identification Number (EIN)")
+			npi_values[6] = row.Value("Provider Organization Name (Legal Business Name)")
+			npi_values[7] = row.Value("Provider Last Name (Legal Name)")
+			npi_values[8] = row.Value("Provider First Name")
+			npi_values[9] = row.Value("Provider Middle Name")
+			npi_values[10] = row.Value("Provider Name Prefix Text")
+			npi_values[11] = row.Value("Provider Name Suffix Text")
+			npi_values[12] = row.Value("Provider Credential Text")
+			npi_values[13] = row.Value("Provider Other Organization Name")
+			npi_values[14] = row.Value("Provider Other Organization Name Type Code")
+			npi_values[15] = row.Value("Provider Other Last Name")
+			npi_values[16] = row.Value("Provider Other First Name")
+			npi_values[17] = row.Value("Provider Other Middle Name")
+			npi_values[18] = row.Value("Provider Other Name Prefix Text")
+			npi_values[19] = row.Value("Provider Other Name Suffix Text")
+			npi_values[20] = row.Value("Provider Other Credential Text")
+			npi_values[21] = row.Value("Provider Other Last Name Type Code")
 
 			business_zip := row.Value("Provider Business Mailing Address Postal Code")
 			if business_zip != "" {
@@ -68,14 +71,14 @@ func Upsert(file io.ReadCloser, file_id string) {
 				business_phone := row.Value("Provider Business Mailing Address Telephone Number")
 				business_fax := row.Value("Provider Business Mailing Address Fax Number")
 
-				npi_values[20] = business_address
-				npi_values[21] = business_details
-				npi_values[22] = business_city
-				npi_values[23] = business_state
-				npi_values[24] = business_zip
-				npi_values[25] = business_country
-				npi_values[26] = business_phone
-				npi_values[27] = business_fax
+				npi_values[22] = business_address
+				npi_values[23] = business_details
+				npi_values[24] = business_city
+				npi_values[25] = business_state
+				npi_values[26] = business_zip
+				npi_values[27] = business_country
+				npi_values[28] = business_phone
+				npi_values[29] = business_fax
 			}
 
 			practice_zip := row.Value("Provider Business Practice Location Address Postal Code")
@@ -88,22 +91,22 @@ func Upsert(file io.ReadCloser, file_id string) {
 				practice_phone := row.Value("Provider Business Practice Location Address Telephone Number")
 				practice_fax := row.Value("Provider Business Practice Location Address Fax Number")
 
-				npi_values[28] = practice_address
-				npi_values[29] = practice_details
-				npi_values[30] = practice_city
-				npi_values[31] = practice_state
-				npi_values[31] = practice_zip
-				npi_values[32] = practice_country
-				npi_values[34] = practice_phone
-				npi_values[35] = practice_fax
+				npi_values[30] = practice_address
+				npi_values[31] = practice_details
+				npi_values[32] = practice_city
+				npi_values[33] = practice_state
+				npi_values[34] = practice_zip
+				npi_values[35] = practice_country
+				npi_values[36] = practice_phone
+				npi_values[37] = practice_fax
 			}
 
-			npi_values[36] = row.Value("Provider Enumeration Date")
-			npi_values[37] = row.Value("Last Update Date")
-			npi_values[38] = row.Value("NPI Deactivation Reason Code")
-			npi_values[39] = row.Value("NPI Deactivation Date")
-			npi_values[40] = row.Value("NPI Reactivation Date")
-			npi_values[41] = row.Value("Provider Gender Code")
+			npi_values[38] = row.Value("Provider Enumeration Date")
+			npi_values[39] = row.Value("Last Update Date")
+			npi_values[40] = row.Value("NPI Deactivation Reason Code")
+			npi_values[41] = row.Value("NPI Deactivation Date")
+			npi_values[42] = row.Value("NPI Reactivation Date")
+			npi_values[43] = row.Value("Provider Gender Code")
 
 			official_last_name := row.Value("Authorized Official Last Name")
 			if official_last_name != "" {
@@ -115,26 +118,26 @@ func Upsert(file io.ReadCloser, file_id string) {
 				name_suffix := row.Value("Authorized Official Name Suffix Text")
 				credential := row.Value("Authorized Official Credential Text")
 
-				npi_values[42] = official_last_name
-				npi_values[43] = first_name
-				npi_values[44] = middle_name
-				npi_values[45] = title
-				npi_values[46] = telephone_number
-				npi_values[47] = name_prefix
-				npi_values[48] = name_suffix
-				npi_values[49] = credential
+				npi_values[44] = official_last_name
+				npi_values[45] = first_name
+				npi_values[46] = middle_name
+				npi_values[47] = title
+				npi_values[48] = telephone_number
+				npi_values[49] = name_prefix
+				npi_values[50] = name_suffix
+				npi_values[51] = credential
 			}
 
-			npi_values[50] = row.Value("Is Sole Proprietor")
-			npi_values[51] = row.Value("Is Organization Subpart")
+			npi_values[52] = row.Value("Is Sole Proprietor")
+			npi_values[53] = row.Value("Is Organization Subpart")
 			parent_business_name := row.Value("Parent Organization LBN")
 			if parent_business_name != "" {
 				tax_identification_number := row.Value("Parent Organization TIN")
-				npi_values[52] = parent_business_name
-				npi_values[53] = tax_identification_number
+				npi_values[54] = parent_business_name
+				npi_values[55] = tax_identification_number
 			}
 
-			taxonomyIndex := 54
+			taxonomyIndex := 56
 			for i := 1; i <= 15; i++ {
 				taxonomyCode := row.Value("Healthcare Provider Taxonomy Code_" + strconv.Itoa(i))
 				taxonomySwitch := row.Value("Healthcare Provider Primary Taxonomy Switch_" + strconv.Itoa(i))
@@ -185,6 +188,15 @@ func Upsert(file io.ReadCloser, file_id string) {
 				panic(fmt.Sprintf("Taxonomy size was %d, expected %d", taxonomyIndex, list_size))
 			}
 
+			hash := fnv.New64a()
+			// Hash everything except the file ID and the hash itself.
+			for i := 2; i < list_size; i++ {
+				hash.Write([]byte(npi_values[i]))
+			}
+
+			hashValue := int64(hash.Sum64())
+			npi_values[1] = strconv.FormatInt(hashValue, 10)
+
 			npis <- npi_values
 		}
 
@@ -197,6 +209,8 @@ func Upsert(file io.ReadCloser, file_id string) {
 			channel:  npis,
 			idColumn: "npi",
 			columns: []string{
+				"file_id",
+				"hash",
 				"npi",
 				"entity_type_code",
 				"replacement_npi",
@@ -552,4 +566,5 @@ func Upsert(file io.ReadCloser, file_id string) {
 	}
 
 	wg.Wait()
+	return nil
 }

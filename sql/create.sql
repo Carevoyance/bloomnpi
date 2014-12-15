@@ -12,6 +12,8 @@ INSERT INTO bloom.data_sources (source, updated, checked, status) VALUES ('NPI',
 
 CREATE TABLE bloom.npis (
     npi bigint NOT NULL,
+    file_id uuid NOT NULL,
+    hash bigint NOT NULL,
     revision int DEFAULT 0,
     entity_type_code smallint,
     replacement_npi bigint,
@@ -341,6 +343,5 @@ CREATE TABLE bloom.npis (
     healthcare_provider_taxonomy_group_13 character varying(70),
     healthcare_provider_taxonomy_group_14 character varying(70),
     healthcare_provider_taxonomy_group_15 character varying(70),
-    hash character varying(40),
     updated timestamp without time zone DEFAULT now()
 );
