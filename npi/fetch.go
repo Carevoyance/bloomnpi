@@ -1,13 +1,13 @@
 package npi
 
 import (
-	"sort"
 	"fmt"
-	"io/ioutil"
-	"os"
-	"time"
 	"github.com/dimfeld/bloomdb"
 	"github.com/dimfeld/bloomnpi/helpers"
+	"io/ioutil"
+	"os"
+	"sort"
+	"time"
 )
 
 func Fetch() {
@@ -58,7 +58,10 @@ func Fetch() {
 
 		monthlyKey := bloomdb.MakeKey(monthlyTodos[0])
 
-		Upsert(reader, monthlyKey)
+		err = Upsert(reader, monthlyKey)
+		if err != nil {
+			return
+		}
 
 		file, err := ioutil.ReadFile("sql/index.sql")
 		if err != nil {
@@ -91,7 +94,10 @@ func Fetch() {
 
 		weeklyKey := bloomdb.MakeKey(weeklyTodo)
 
-		Upsert(reader, weeklyKey)
+		err = Upsert(reader, weeklyKey)
+		if err != nil {
+			return
+		}
 	}
 
 	doneTodos := append(monthlyTodos, weeklyTodos...)
