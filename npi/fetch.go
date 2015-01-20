@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/dimfeld/bloomdb"
 	"github.com/dimfeld/bloomnpi/helpers"
-	"io/ioutil"
 	"os"
 	"sort"
 	"time"
