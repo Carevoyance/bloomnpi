@@ -1,5 +1,5 @@
 WITH changed as (
 	SELECT o.npi FROM {{.Table}} o JOIN {{.TempTable}} n ON o.{{.IdColumn}}=n.{{.IdColumn}} AND 
-	   o.hash <> n.hash AND o.revision=0
+	   o.last_update_date <> n.last_update_date AND o.revision=0
 )
 UPDATE {{.Table}} o SET revision=o.revision+1 FROM changed WHERE o.npi=changed.npi;
