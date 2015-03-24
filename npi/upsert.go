@@ -2,8 +2,8 @@ package npi
 
 import (
 	"fmt"
-	"github.com/dimfeld/bloomdb"
-	"github.com/dimfeld/bloomnpi/csvHeaderReader"
+	"github.com/Carevoyance/bloomdb"
+	"github.com/Carevoyance/bloomnpi/csvHeaderReader"
 	"hash/fnv"
 	"io"
 	"strconv"

@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 	"fmt"
-	"github.com/dimfeld/bloomnpi/npi"
+	"github.com/Carevoyance/bloomnpi/npi"
 	"github.com/spf13/viper"
 )
 

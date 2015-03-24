@@ -3,7 +3,7 @@ package npi
 import (
 	"log"
 	"io/ioutil"
-	"github.com/dimfeld/bloomdb"
+	"github.com/Carevoyance/bloomdb"
 )
 
 func Bootstrap () {

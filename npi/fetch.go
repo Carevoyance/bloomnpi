@@ -2,8 +2,8 @@ package npi
 
 import (
 	"fmt"
-	"github.com/dimfeld/bloomdb"
-	"github.com/dimfeld/bloomnpi/helpers"
+	"github.com/Carevoyance/bloomdb"
+	"github.com/Carevoyance/bloomnpi/helpers"
 	"os"
 	"sort"
 	"time"
