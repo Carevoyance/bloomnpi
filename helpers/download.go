@@ -1,8 +1,9 @@
 package helpers
 
 import (
-	"net/http"
 	"io"
+	"log"
+	"net/http"
 	"os"
 )
 
@@ -13,7 +14,9 @@ func Download(file string) error {
 	}
 	defer out.Close()
 
-	resp, err := http.Get("http://download.cms.gov/nppes/" + file + ".zip")
+	path := "http://download.cms.gov/nppes/" + file + ".zip"
+	log.Print("Downloading", path)
+	resp, err := http.Get(path)
 	if err != nil {
 		return err
 	}
