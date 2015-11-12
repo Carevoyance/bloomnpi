@@ -1,3 +1,5 @@
 Godeps/_workspace
 data/*
 !data/Readme.md
+/bloomnpi
+.DS_Store
