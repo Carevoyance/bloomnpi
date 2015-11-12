@@ -14,7 +14,6 @@ CREATE TABLE bloom.npis (
     npi bigint NOT NULL,
     file_id uuid NOT NULL,
     hash bigint NOT NULL,
-    revision int DEFAULT 0,
     entity_type_code smallint,
     replacement_npi bigint,
     employer_identification_number_ein character varying(9),
@@ -347,3 +346,9 @@ CREATE TABLE bloom.npis (
 );
 
 CREATE INDEX ON bloom.npis (npi);
+
+CREATE TABLE bloom.npis_old (LIKE bloom.npis);
+ALTER TABLE bloom.npis_old ADD COLUMN _start_date date;
+ALTER TABLE bloom.npis_old ADD COLUMN _end_date  date DEFAULT NOW();
+CREATE INDEX ON bloom.npis_old(npi);
+CREATE INDEX ON bloom.npis(_start_date, _end_date);
