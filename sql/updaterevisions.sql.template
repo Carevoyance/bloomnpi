@@ -1,5 +1,5 @@
 INSERT INTO {{.Table}}_old
-    SELECT o.*, n.last_update_date as _end_date, o.last_update_date as _start_date
+    SELECT o.*, o.last_update_date as _start_date, n.last_update_date as _end_date 
     FROM {{.Table}} o
     JOIN {{.TempTable}} n ON o.{{.IdColumn}}=n.{{.IdColumn}} AND
        o.last_update_date <> n.last_update_date;
