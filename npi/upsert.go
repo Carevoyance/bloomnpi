@@ -7,6 +7,7 @@ import (
 	"hash/fnv"
 	"io"
 	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -193,6 +194,11 @@ func Upsert(file io.ReadCloser, file_id string) error {
 			// Hash everything except the file ID and the hash itself.
 			for i := 2; i < list_size; i++ {
 				if npi_values[i] != "" {
+					// Remove UTF-8 "replacement character" codes, which occur a few times
+					// throughout the NPPES data and indicate non-ASCII characters that their
+					// system does not handle correctly.
+					npi_values[i] = strings.Replace(npi_values[i], "\ufffd", "", -1)
+
 					hash.Write([]byte(npi_values[i]))
 				}
 			}
