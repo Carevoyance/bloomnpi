@@ -15,7 +15,7 @@ func Download(file string) error {
 	defer out.Close()
 
 	path := "http://download.cms.gov/nppes/" + file + ".zip"
-	log.Print("Downloading", path)
+	log.Print("Downloading ", path)
 	resp, err := http.Get(path)
 	if err != nil {
 		return err
